@@ -1,0 +1,90 @@
+.game-card {
+  width: 130vh;
+  height: 100vh;
+  font-family: "Open Sans", monospace;
+}
+
+.lightrope {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  z-index: 1;
+  margin: -15px 0 0 0;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.lightrope li {
+  position: relative;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 20px;
+  display: inline-block;
+  background: #dd0606d2;
+  animation: lightrope 2s linear infinite;
+}
+
+@keyframes lightrope {
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.btn-group{
+  background: linear-gradient(to right, var(--cores-dancantes));
+
+  border-radius: 10px;
+  position: relative;
+  z-index: 999;
+  animation: coresDancantes 2s linear infinite;
+}
+
+@keyframes coresDancantes {
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+#btnRetry {
+  background: linear-gradient(to right, var(--cores-dancantes));
+  border-radius: 10px;
+  position: relative;
+  z-index: 999;
+  animation: coresDancantes 2s linear infinite;
+  background-color: #e20000;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  
+}
+
+@keyframes coresDancantes {
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+.card {
+  right: 3cm;
+  background-color: #c9030383;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
