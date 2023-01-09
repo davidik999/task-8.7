@@ -1,5 +1,27 @@
 let minValue = parseInt(prompt("Минимальное знание числа для игры", "0"));
+function rejection (x) {
+  let res = parseInt(x);
+  if (isNaN(res)) {
+    return 0;
+  }
+  return res;
+}
+minValue = rejection(minValue);
+
+minValue = minValue < -999 ? -999 : minValue > 999 ? (minValue = 999) : minValue;
+
 let maxValue = parseInt(prompt("Максимальное знание числа для игры", "100"));
+
+function rejection2 (x) {
+  let res = parseInt(x);
+  if (isNaN(res)) {
+    return 100;
+  }
+  return res;
+}
+maxValue = rejection(maxValue) ? maxValue : 100;
+maxValue = maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
+
 alert(
   `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`
 );
@@ -12,9 +34,9 @@ const answerField = document.getElementById("answerField");
 
 orderNumberField.innerText = orderNumber;
 const question = [
-  `Вы загадали число ${answerNumber}?`,
-  `Ну наверное это число ${answerNumber}?`,
-  `И как я всегда угадываю число ${answerNumber}?`,
+  `Вы загадали число ${parseNumber(answerNumber)}?`,
+  `Ну наверное это число ${parseNumber(answerNumber)}?`,
+  `И как я всегда угадываю число ${parseNumber(answerNumber)}?`,
 ];
 const answerPhrase = (max) => {
   return Math.floor(Math.random() * max);
@@ -31,7 +53,7 @@ document.getElementById("btnRetry").addEventListener("click", function () {
   answerNumber = Math.floor((minValue + maxValue) / 2);
   orderNumber = 1;
   gameRun = true;
-  answerField.innerText = `Вы загадали число ${answerNumber}?`;
+  answerField.innerText = `Вы загадали число ${parseNumber(answerNumber)}?`;
   minValue = 0;
   maxValue = 100;
   orderNumber = 0;
@@ -53,7 +75,7 @@ document.getElementById("btnLess").addEventListener("click", function () {
       answerNumber = Math.round((minValue + maxValue) / 2);
       orderNumber++;
       orderNumberField.innerText = orderNumber;
-      answerField.innerText = `Вы загадали число ${answerNumber}?`;
+      answerField.innerText = `Вы загадали число ${parseNumber(answerNumber)}?`;
     }
   }
 });
@@ -74,7 +96,7 @@ document.getElementById("btnOver").addEventListener("click", function () {
       answerNumber = Math.floor((minValue + maxValue) / 2);
       orderNumber++;
       orderNumberField.innerText = orderNumber;
-      answerField.innerText = `Вы загадали число ${answerNumber}?`;
+      answerField.innerText = `Вы загадали число ${parseNumber(answerNumber)}?`;
     }
   }
 });
@@ -91,3 +113,57 @@ document.getElementById("btnEqual").addEventListener("click", function () {
   const random1 = answerPhrase(numbers.length);
   answerField.innerText = numbers[random1];
 });
+function innerText(number = "") {
+  if (number == "") {
+    answerField.innerText = `${answerPhrase()}`;
+  } else {
+    answerField.innerHTML = `${answerField.innerText()}\n<span class='number'>${number}</span>?`;
+  }
+}
+
+function parseNumber(number){
+    const
+        hun = ['сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'],
+        doz = ['десять', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
+        units = ['ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'],
+        fdoz = ['одиннацать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+    // переводим число в строку
+    let str = number.toString(), out = '';
+    
+    // если меньше 20 символов, то выводим число вместо строки 
+    
+    if (str.length > 20) {
+      return number;
+    }
+
+    // если число меньше 0, то в строке удаляем первый символ
+    if(number < 0){
+      str = str.substring(1);
+    }
+    // если длина строки 1, возвращаем число из массива единиц
+    if(str.length == 1) return units[number];
+    // если длина строки 2
+    else if(str.length == 2){
+        // обрабатываем случай когда число равно 10
+        if(str == '10') out = doz[0];
+        // обрабатываем случай когда число от 11 до 19
+        else if(str[0] == 1) out = fdoz[parseInt(str[1])-1];
+        // остальные случаи, обрабатываем первый символ в массиве десятков
+        // затем проверяем тернарным оператором, если число заканчивается 0, то не 
+        // добавляем ничего, иначе через пробел обработывет второй символ в массиве единиц
+        else out = (doz[parseInt(str[0])-1] + ((str[1]!='0')?(' ' + units[parseInt(str[1])]):''));
+    }
+    // если длина строки равно 3 и число трехзначное
+    else if(str.length == 3){
+        if(number > 110 && number < 120)
+          out = hun[parseInt(str[0])-1] + ' ' + fdoz[parseInt(str[2])-1];
+        else
+          out = (hun[parseInt(str[0])-1] + ((str[1]!='0')?(' ' + doz[parseInt(str[1])-1]):'') + ((str[2]!='0')?(' ' + units[parseInt(str[2])]):''));
+    }
+    // добавляем 0, если нужно
+    if(number < 0){
+      out = "минус " + out;
+    }
+    return out;
+}
+
