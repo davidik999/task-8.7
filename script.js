@@ -45,11 +45,15 @@ const random2 = answerPhrase(question.length);
 answerField.innerText = question[random2];
 
 document.getElementById("btnRetry").addEventListener("click", function () {
+  
   minValue = parseInt(prompt("Минимальное знание числа для игры", "0"));
   maxValue = parseInt(prompt("Максимальное знание числа для игры", "100"));
   alert(
     `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`
   );
+  minValue = minValue < -999 ? -999 : minValue > 999 ? (minValue = 999) : minValue;
+  maxValue =  maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
+  
   answerNumber = Math.floor((minValue + maxValue) / 2);
   orderNumber = 1;
   gameRun = true;
@@ -121,49 +125,48 @@ function innerText(number = "") {
   }
 }
 
+
+
 function parseNumber(number){
+
     const
         hun = ['сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'],
         doz = ['десять', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
         units = ['ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'],
         fdoz = ['одиннацать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
-    // переводим число в строку
+   
     let str = number.toString(), out = '';
-    
-    // если меньше 20 символов, то выводим число вместо строки 
-    
-    if (str.length > 20) {
-      return number;
-    }
 
-    // если число меньше 0, то в строке удаляем первый символ
     if(number < 0){
       str = str.substring(1);
     }
-    // если длина строки 1, возвращаем число из массива единиц
+
     if(str.length == 1) return units[number];
-    // если длина строки 2
+    
     else if(str.length == 2){
-        // обрабатываем случай когда число равно 10
+      
         if(str == '10') out = doz[0];
-        // обрабатываем случай когда число от 11 до 19
+     
         else if(str[0] == 1) out = fdoz[parseInt(str[1])-1];
-        // остальные случаи, обрабатываем первый символ в массиве десятков
-        // затем проверяем тернарным оператором, если число заканчивается 0, то не 
-        // добавляем ничего, иначе через пробел обработывет второй символ в массиве единиц
+      
         else out = (doz[parseInt(str[0])-1] + ((str[1]!='0')?(' ' + units[parseInt(str[1])]):''));
     }
-    // если длина строки равно 3 и число трехзначное
+ 
     else if(str.length == 3){
         if(number > 110 && number < 120)
           out = hun[parseInt(str[0])-1] + ' ' + fdoz[parseInt(str[2])-1];
         else
           out = (hun[parseInt(str[0])-1] + ((str[1]!='0')?(' ' + doz[parseInt(str[1])-1]):'') + ((str[2]!='0')?(' ' + units[parseInt(str[2])]):''));
     }
-    // добавляем 0, если нужно
+    
     if(number < 0){
       out = "минус " + out;
-    }
+    } if (out.length > 20) return number;
     return out;
+    
+  
 }
+
+  
+
 
