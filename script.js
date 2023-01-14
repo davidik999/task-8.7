@@ -48,19 +48,17 @@ document.getElementById("btnRetry").addEventListener("click", function () {
   
   minValue = parseInt(prompt("Минимальное знание числа для игры", "0"));
   maxValue = parseInt(prompt("Максимальное знание числа для игры", "100"));
+  minValue = rejection(minValue);
+  maxValue = rejection(maxValue) ? maxValue : 100;
+  minValue = minValue < -999 ? -999 : minValue > 999 ? (minValue = 999) : minValue;
+  maxValue =  maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
   alert(
     `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`
   );
-  minValue = minValue < -999 ? -999 : minValue > 999 ? (minValue = 999) : minValue;
-  maxValue =  maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
-  
   answerNumber = Math.floor((minValue + maxValue) / 2);
   orderNumber = 1;
   gameRun = true;
   answerField.innerText = `Вы загадали число ${parseNumber(answerNumber)}?`;
-  minValue = 0;
-  maxValue = 100;
-  orderNumber = 0;
 });
 
 document.getElementById("btnLess").addEventListener("click", function () {
@@ -116,6 +114,7 @@ document.getElementById("btnEqual").addEventListener("click", function () {
   };
   const random1 = answerPhrase(numbers.length);
   answerField.innerText = numbers[random1];
+  gameRun = false;
 });
 function innerText(number = "") {
   if (number == "") {
@@ -153,7 +152,7 @@ function parseNumber(number){
     }
  
     else if(str.length == 3){
-        if(number > 110 && number < 120)
+        if(parseInt(str.substring(1)) > 10 && parseInt(str.substring(1)) < 20)
           out = hun[parseInt(str[0])-1] + ' ' + fdoz[parseInt(str[2])-1];
         else
           out = (hun[parseInt(str[0])-1] + ((str[1]!='0')?(' ' + doz[parseInt(str[1])-1]):'') + ((str[2]!='0')?(' ' + units[parseInt(str[2])]):''));
