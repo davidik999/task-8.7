@@ -15,13 +15,17 @@ let maxValue = parseInt(prompt("Максимальное знание числа
 function rejection2 (x) {
   let res = parseInt(x);
   if (isNaN(res)) {
-    return 100;
+    return 0;
   }
   return res;
 }
-maxValue = rejection(maxValue) ? maxValue : 100;
+maxValue = rejection(maxValue);
 maxValue = maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
-
+if(maxValue < minValue){
+  let temp = minValue;
+  minValue = maxValue;
+  maxValue = temp;
+}
 alert(
   `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`
 );
@@ -49,9 +53,14 @@ document.getElementById("btnRetry").addEventListener("click", function () {
   minValue = parseInt(prompt("Минимальное знание числа для игры", "0"));
   maxValue = parseInt(prompt("Максимальное знание числа для игры", "100"));
   minValue = rejection(minValue);
-  maxValue = rejection(maxValue) ? maxValue : 100;
+  maxValue = rejection(maxValue);
   minValue = minValue < -999 ? -999 : minValue > 999 ? (minValue = 999) : minValue;
   maxValue =  maxValue > 999 ? 999 : maxValue < -999 ? (maxValue = -999) : maxValue;
+  if(maxValue < minValue){
+    let temp = minValue;
+    minValue = maxValue;
+    maxValue = temp;
+  }
   alert(
     `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`
   );
@@ -165,6 +174,7 @@ function parseNumber(number){
     
   
 }
+
 
   
 
